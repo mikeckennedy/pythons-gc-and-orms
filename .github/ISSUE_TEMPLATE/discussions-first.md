@@ -1,6 +1,6 @@
 ---
 name: Discussions first
-about: Encourage people to use discussions for discussion-type of conversations
+about: Please use discussions for discussion-type of conversations
 title: ''
 labels: ''
 assignees: ''
