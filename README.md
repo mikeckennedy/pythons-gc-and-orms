@@ -13,10 +13,11 @@ without adjusting Python's GC settings, we get an extreme number of GC collectio
 (1,859 GCs for a single SQLAlchemy query). Yet, clearly none of these records are
 garbage yet because they haven't even been fully realized from the DB.
 
-Our fix at [Talk Python](https://talkpython.fm) has been to change the number of allocations required to *force*
-a GC from 700 to 50,000. Interesting, this results in LESS not more memory used. 
+Our fix at [Talk Python](https://talkpython.fm) has been to increase the number of 
+surviving allocations required to *force* a GC from 700 to 50,000. Interestingly, 
+this results in LESS, not more memory used. 
 
-The stats below are from Python 3.10.1 running on macOS with Apple Silicon.
+The stats below are from Python 3.9.9 running on macOS with Apple Silicon.
 
 ## Python Default GC Settings
 
@@ -48,10 +49,11 @@ The stats below are from Python 3.10.1 running on macOS with Apple Silicon.
 1. Create a virtual environment: `python3 -m venv venv`
 2. Activate it: `. /venv/bin/activate`
 3. Install requirements: `pip install -r requirements.txt`
-4. Import the data: `python importer/importer.py`
-5. Run the test query app: `python test_app.py`
-6. Choose combinations of the different options offered in the app
-7. Count the number of times `"gc: done"` appears when running with diagnostics on
+4. _Optionally_: Have MongoDB running locally with default settings
+5. Import the data: `python importer/importer.py`
+6. Run the test query app: `python test_app.py`
+7. Choose combinations of the different options offered in the app
+8. Count the number of times `"gc: done"` appears when running with diagnostics on
 
 ## Resolutions
 
@@ -61,11 +63,11 @@ Maybe someday Python will have an adaptive GC where if it runs a
 collection and finds zero cycles it backs off and if it starts finding more cycles it ramps up or 
 something like that. Until then, we have a few knobs.
 
-In Python,we have the `gc` module. This code will allow us to turn down the frequency of GCs:
+In Python, we have the `gc` module. This code will allow us to turn down the frequency of GCs:
 
 ```python
 allocations, gen1, gen2 = gc.get_threshold()
-allocations = 50_000  # Start the GC sequence every 50K not 700 class allocations.
+allocations = 50_000  # Start the GC every 50K not 700 surviving container allocations.
 gc.set_threshold(allocations, gen1, gen2)
 ```
 
