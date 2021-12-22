@@ -1,6 +1,6 @@
-# Question: Does Python do extremely too many GCs for ORMs?
+# Does Python do extremely too many GCs for ORMs?
 
-## YES, OMG YES.
+## YES, OMG YES
 
 Imagine you need to query a hefty number of records back from the database.
 The sample app in this repo will create a database of 100,000 small records (see `importer.py`)
