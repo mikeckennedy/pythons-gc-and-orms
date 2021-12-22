@@ -13,8 +13,8 @@ without adjusting Python's GC settings, we get an extreme number of GC collectio
 (1,859 GCs for a single SQLAlchemy query). Yet, clearly none of these records are
 garbage yet because they haven't even been fully realized from the DB.
 
-Our fix at Talk Python has been to change the number of allocations required to *force*
-a GC from 700 to 50,000. Interesting, the results in LESS not more memory used. 
+Our fix at [Talk Python](https://talkpython.fm) has been to change the number of allocations required to *force*
+a GC from 700 to 50,000. Interesting, this results in LESS not more memory used. 
 
 The stats below are from Python 3.10.1 running on macOS with Apple Silicon.
 
@@ -26,7 +26,7 @@ The stats below are from Python 3.10.1 running on macOS with Apple Silicon.
   - 78.7 MB mem
 
 - MongoEngine - 20,000 records in one query
-  - 463 GCs
+  - **463 GCs**
   - 593ms
   - 75.8 MB mem
 
@@ -39,7 +39,7 @@ The stats below are from Python 3.10.1 running on macOS with Apple Silicon.
   - 76.8 MB mem (surprisingly: 2% improvement with less GC)
 - 
 - MongoEngine - 20,000 records in one query
-  - 10 GCs (46x improvement)
+  - **10 GCs (46x improvement)**
   - 515ms (13%)
   - 72.3 MB mem (surprisingly: 4% improvement with less GC)
 
