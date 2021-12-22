@@ -38,19 +38,22 @@ def populate_sql():
 
 
 def populate_mongodb():
-    count = MongoEntry.objects().count()
-    if count > 1:
-        print(f"MongoDB already populated ({count:,} items), skipping.")
-        return
+    try:
+        count = MongoEntry.objects().count()
+        if count > 1:
+            print(f"MongoDB already populated ({count:,} items), skipping.")
+            return
 
-    entries = []
-    print(f'Adding {ENTRY_COUNT:,} Mongo entries...', flush=True)
-    for _ in range(0, ENTRY_COUNT):
-        entries.append(MongoEntry())
+        entries = []
+        print(f'Adding {ENTRY_COUNT:,} Mongo entries...', flush=True)
+        for _ in range(0, ENTRY_COUNT):
+            entries.append(MongoEntry())
 
-    print(f'Committing MongoDB entries...', flush=True, end=' ')
-    MongoEntry.objects().insert(entries)
-    print('done.')
+        print(f'Committing MongoDB entries...', flush=True, end=' ')
+        MongoEntry.objects().insert(entries)
+        print('done.')
+    except Exception as x:
+        print(f"ERROR: Could not populate MongoDB data - is it running locally? {x}")
 
 
 def setup_sql():

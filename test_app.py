@@ -110,7 +110,7 @@ def test_mongodb(count):
 def setup_sql():
     db_file = os.path.join(
         os.path.dirname(__file__),
-        '..',
+        '',
         'db',
         'gc_test_db.sqlite')
 
