@@ -1,5 +1,9 @@
 import os
+import sys
 from typing import Final
+
+folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, folder)
 
 from data.mongo import mongo_setup
 from data.sql import db_session

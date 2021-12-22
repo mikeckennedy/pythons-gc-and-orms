@@ -1,6 +1,10 @@
 import datetime
 import gc
 import os
+import sys
+
+folder = os.path.abspath(os.path.join(os.path.dirname(__file__)))
+sys.path.insert(0, folder)
 
 from data.mongo import mongo_setup
 from data.mongo.some_entry import SomeEntry as MongoEntry
