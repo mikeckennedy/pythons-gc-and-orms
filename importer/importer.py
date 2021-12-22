@@ -40,7 +40,7 @@ def populate_sql():
 def populate_mongodb():
     count = MongoEntry.objects().count()
     if count > 1:
-        print(f"SQL already populated ({count:,} items), skipping.")
+        print(f"MongoDB already populated ({count:,} items), skipping.")
         return
 
     entries = []
