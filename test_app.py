@@ -17,8 +17,8 @@ def main():
     setup_sql()
     setup_mongo()
 
-    test_sql(1)
-    test_mongodb(1)
+    test_sql(1, quiet=True)
+    test_mongodb(1, quiet=True)
 
     q = input("Run with [d]efault GC settings? Or [o]ptimized GC settings? ")
     if q not in {'d', 'o'}:
@@ -71,7 +71,7 @@ def config_gc(alter: bool, diags: bool):
         print(f"Using Python's default GC config: {allocations:,}, {gen1}, {gen2}.")
 
 
-def test_sql(count):
+def test_sql(count, quiet=False):
     t0 = datetime.datetime.now()
     s = db_session.create_session()
     try:
@@ -88,12 +88,13 @@ def test_sql(count):
 
         t1 = datetime.datetime.now()
         dt = (t1 - t0)
-        print(f"Loaded {len(entries):,} entries from SQL. Time: {dt.total_seconds():,.3} sec", flush=True)
+        if not quiet:
+            print(f"Loaded {len(entries):,} entries from SQL. Time: {dt.total_seconds():,.3} sec", flush=True)
     finally:
         s.close()
 
 
-def test_mongodb(count):
+def test_mongodb(count, quiet=False):
     t0 = datetime.datetime.now()
     if MongoEntry.objects().count() == 0:
         print(f"ERROR: No MongoDB data found, run importer first.")
@@ -108,7 +109,8 @@ def test_mongodb(count):
 
     t1 = datetime.datetime.now()
     dt = (t1 - t0)
-    print(f"Loaded {len(entries):,} entries from MongoDB. Time: {dt.total_seconds():,.3} sec", flush=True)
+    if not quiet:
+        print(f"Loaded {len(entries):,} entries from MongoDB. Time: {dt.total_seconds():,.3} sec", flush=True)
 
 
 def setup_sql():
